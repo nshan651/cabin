@@ -12,4 +12,5 @@ secret:
 
 # Reload the photos in nextcloud.
 rescan:
-	docker exec -u www-data nextcloud php occ files:scan --all
+	# No need to exec as another user (-u flag). occ can be used as a standalone.
+	docker exec -it nextcloud occ files:scan --all

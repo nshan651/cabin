@@ -64,7 +64,7 @@ services:
       authelia_generate_secrets:
         condition: service_completed_successfully
     volumes:
-      - ./data/authelia:/config
+      - ./config/authelia:/config
     restart: unless-stopped
     expose: 
       - 9091
@@ -153,20 +153,20 @@ services:
 
   nextcloud:
     container_name: nextcloud
-    image: linuxserver/nextcloud
+    image: linuxserver/nextcloud:latest
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.nextcloud.rule=Host(`nextcloud.${MY_DOMAIN}`)'
-      - 'traefik.http.routers.nextcloud.entryPoints=websecure'
-      - 'traefik.http.routers.nextcloud.middlewares=authelia@docker'
     environment:
       PUID: '1000'
       PGID: '1000'
       TZ: 'America/Chicago'
     volumes:
-      - ./data/nextcloud:/var/www/html
-      - /mnt/media/dox/pix:/var/www/html/data/nshan651/files/Photos:ro
+      - ./config/nextcloud:/config
+      - ./data/nextcloud:/data
+      # Enable the external mounts via Nextcloud GUI for this.
+      - /mnt/media/dox/pix:/nshan651/files
 
   freshrss:
     image: freshrss/freshrss:latest
@@ -182,11 +182,4 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     volumes:
-      - ./data/freshrss:/var/www/freshrss/data
-
-#volumes:
-#  nextcloud:
-
-# networks:
-#   net:
-#     driver: bridge
+      - ./config/freshrss:/var/www/freshrss/data

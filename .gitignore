@@ -2,5 +2,9 @@
 **/*.env
 
 etc/**
-data/traefik/**
 data/**
+
+# Ignore Nextcloud, since much of it is not even config...
+# (Why would they store my private keys here???)
+config/nextcloud/**
+
